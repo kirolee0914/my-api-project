@@ -26,7 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
         resultDiv.innerHTML = "토큰 요청 중...";
 
         try {
-            const response = await fetch(apiUrl, {
+            // 프록시 URL을 사용하여 CORS 문제 해결
+            const proxyUrl = "https://corsproxy.io/?";
+            const proxiedApiUrl = proxyUrl + encodeURIComponent(apiUrl);
+
+            const response = await fetch(proxiedApiUrl, {
                 method: 'POST',
                 headers: {
                     'Authorization': basicAuth,
