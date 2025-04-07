@@ -14,11 +14,12 @@
                 <input type="url" id="apiUrl" placeholder="https://apidocs.securitycloud.symantec.com/v1/oauth2/token" required>
             </div>
             <div class="form-group">
-                <label for="apiKey">API Key</label>
-                <input type="password" id="apiKey" required>
+                <label for="basicAuth">Basic Authorization</label>
+                <input type="text" id="basicAuth" placeholder="Basic TzJJRC5ZZE1sSk85..." required>
             </div>
             <button type="submit">토큰 생성</button>
         </form>
+        <div id="result" style="margin-top: 20px;"></div>
     </div>
 
     <script src="script.js"></script>
