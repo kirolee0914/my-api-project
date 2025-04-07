@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>SESC API 토큰 생성</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 SESC API 인증</h1>
+        <form id="authForm">
+            <div class="form-group">
+                <label for="apiUrl">API URL</label>
+                <input type="url" id="apiUrl" placeholder="https://apidocs.securitycloud.symantec.com/v1/oauth2/token" required>
+            </div>
+            <div class="form-group">
+                <label for="apiKey">API Key</label>
+                <input type="password" id="apiKey" required>
+            </div>
+            <button type="submit">토큰 생성</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
