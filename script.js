@@ -1,52 +1,42 @@
-// 토큰 생성 로직
 document.getElementById('authForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const apiUrl = document.getElementById('apiUrl').value;
-    const apiKey = document.getElementById('apiKey').value;
+    const basicAuth = document.getElementById('basicAuth').value;
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = "토큰 요청 중...";
 
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': basicAuth,
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: new URLSearchParams({
-                'grant_type': 'client_credentials',
-                'client_id': 'your_client_id',
-                'client_secret': apiKey
+                'grant_type': 'client_credentials'
             })
         });
 
-        if (!response.ok) throw new Error('인증 실패');
-        
-        const { access_token } = await response.json();
-        localStorage.setItem('sesc_token', access_token);
-        window.location.href = 'categories.html';
-        
+        if (!response.ok) {
+            throw new Error(`HTTP 오류: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const token = data.access_token;
+
+        if (token) {
+            localStorage.setItem('sesc_token', token);
+            resultDiv.innerHTML = `<p style="color: green;">토큰 생성 성공!<br>Access Token: ${token}</p>`;
+            setTimeout(() => {
+                window.location.href = 'categories.html';
+            }, 2000); // 2초 후 카테고리 페이지로 이동
+        } else {
+            resultDiv.innerHTML = `<p style="color: red;">토큰 생성 실패: 응답에 토큰이 없습니다.</p>`;
+        }
     } catch (error) {
-        alert('토큰 생성 실패: ' + error.message);
+        console.error(error);
+        resultDiv.innerHTML = `<p style="color: red;">오류 발생: ${error.message}</p>`;
     }
-});
-
-// API 카테고리 로직
-document.addEventListener('DOMContentLoaded', () => {
-    const categories = [
-        { name: "엔드포인트 관리", url: "endpoint.html" },
-        { name: "위협 탐지", url: "threat.html" },
-        { name: "정책 관리", url: "policy.html" }
-    ];
-
-    const container = document.getElementById('categoryContainer');
-    
-    categories.forEach(cat => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.marginBottom = '10px';
-        card.innerHTML = `
-            <div class="card-body" onclick="window.open('${cat.url}', '_blank')">
-                ${cat.name}
-            </div>`;
-        container.appendChild(card);
-    });
 });
