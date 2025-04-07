@@ -19,8 +19,10 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
             })
         });
 
+        // 응답 상태 확인
         if (!response.ok) {
-            throw new Error(`HTTP 오류: ${response.status}`);
+            const errorText = await response.text(); // 서버에서 반환한 에러 메시지
+            throw new Error(`HTTP 오류: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
@@ -37,6 +39,9 @@ document.getElementById('authForm').addEventListener('submit', async (e) => {
         }
     } catch (error) {
         console.error(error);
-        resultDiv.innerHTML = `<p style="color: red;">오류 발생: ${error.message}</p>`;
+        resultDiv.innerHTML = `
+            <p style="color: red;">오류 발생:</p>
+            <pre>${error.message}</pre>
+        `;
     }
 });
